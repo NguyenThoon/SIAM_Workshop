@@ -61,72 +61,6 @@ If `gnuplot` is not recognized, then GNUplot may not have been added to your PAT
 "C:\Program Files\gnuplot\bin\wgnuplot.exe"
 ```
 
----
-
-
-## What are polar coordinates?
-
-In Cartesian coordinates, we describe a point using $(x,y)$.
-
-In polar coordinates, we describe a point using:
-
-- $r$: the distance from the origin
-- $\theta$: the angle from the positive $x$-axis
-
-To convert polar coordinates into Cartesian coordinates, we use
-
-$$
-x = r\cos\theta, \qquad y = r\sin\theta
-$$
-
-That is exactly what this code is doing.
-
----
-
-## The basic idea of this program
-
-The program loops through many values of $\theta$, computes a radius `R`, and then converts that into $(x,y,z)$ coordinates.
-
-Right now, the important part is this section:
-
-```cpp
-//Function to Change//
-double R = 1;
-//-----------------//
-```
-
-This is where you control the shape.
-
-If `R` is constant, the program makes a circle.
-
-If `R` depends on $\theta$, the program makes more interesting polar curves.
-
----
-
-## Starting simple
-
-### Example 1: Circle of radius 1
-
-```cpp
-double R = 1;
-```
-
-### Example 2: Circle of radius 2
-
-Change the code to
-
-```cpp
-double R = 2;
-```
-
-Run the program again and compare the result.
-
-### Question
-
-What changed when you doubled the radius?
-
----
-
 ## How to experiment
 
 Each time you want to try a new shape:
@@ -222,6 +156,60 @@ This tells GNUplot to use:
 
 Since your current code sets `z = 0`, the 3D plot will still lie in a flat plane.
 
+---
+
+
+## What are polar coordinates?
+
+In Cartesian coordinates, we describe a point using $(x,y)$.
+
+In polar coordinates, we describe a point using:
+
+- $r$: the distance from the origin
+- $\theta$: the angle from the positive $x$-axis
+
+To convert polar coordinates into Cartesian coordinates, we use
+
+$$
+x = r\cos\theta, \qquad y = r\sin\theta
+$$
+
+That is exactly what this code is doing.
+
+---
+
+## The basic idea of this program
+
+The program loops through many values of $\theta$, computes a radius `R`, and then converts that into $(x,y,z)$ coordinates.
+
+Right now, the important part is this section:
+
+```cpp
+//Function to Change//
+double R = 1;
+//-----------------//
+```
+
+This is where you control the shape.
+
+If `R` is constant, the program makes a circle.
+
+If `R` depends on $\theta$, the program makes more interesting polar curves.
+
+---
+
+## Starting simple
+
+
+## Example: Circle of radius 2
+
+Change the code to
+
+```cpp
+double R = 2;
+```
+
+Run the program again and compare the result.
 
 ---
 ## Example: Archimedian Curve
