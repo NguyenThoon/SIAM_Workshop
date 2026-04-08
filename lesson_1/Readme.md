@@ -200,7 +200,7 @@ After GNUplot opens, try these commands.
 ### 2D plot
 
 ```gnuplot
-plot 'circle.dat' using 1:2 with lines
+plot 'circle.dat' using 1:2 with points lc rgb "black" pt 7 ps 1.2
 ```
 
 This tells GNUplot to use:
@@ -211,7 +211,7 @@ This tells GNUplot to use:
 ### 3D plot
 
 ```gnuplot
-splot 'circle.dat' using 1:2:3 with lines
+splot 'circle.dat' using 1:2:3 with points lc rgb "black" pt 7 ps 1.2
 ```
 
 This tells GNUplot to use:
@@ -222,6 +222,15 @@ This tells GNUplot to use:
 
 Since your current code sets `z = 0`, the 3D plot will still lie in a flat plane.
 
+
+---
+## Example: Archimedian Curve
+This code will plot a spiral.
+```cpp
+double a = .3;
+double R = a * theta;
+```
+What happens when the sign of `a` changes?
 ---
 ## Example: Limaçon
 
@@ -284,20 +293,6 @@ Try different values of `n`.
 
 ---
 
-## Example: Cardioid
-
-A cardioid is a special case of a limaçon.
-
-$$
-r = a(1+\cos\theta)
-$$
-
-Try:
-
-```cpp
-double a = 1.0;
-double R = a * (1 + std::cos(theta));
-```
 
 ### Questions to explore
 
@@ -309,60 +304,23 @@ double R = a * (1 + std::cos(theta));
 
 ## Example: Star-like shape
 
-One way to create a star-like pattern is to use a cosine with a larger frequency:
+Try this star shaped object?
 
 ```cpp
 double a = 1.0;
+double b = 03;
 int n = 6;
-double R = a * std::cos(n * theta);
+double R = a +b* std::cos(n * theta);
 ```
 
-You can also try combining functions:
-
-```cpp
-double R = 1.0 + 0.4 * std::cos(5 * theta);
-```
-
-### Questions to explore
-
-- Which formulas look more like flowers?
-- Which formulas look more like stars?
-- What happens when the oscillation gets larger?
-- Can you make a sharper-looking star?
+Can you make it a square?
 
 ---
 
-## Example: Square-like shape
 
-Polar equations do not usually make a perfect square, but you can make shapes that look somewhat square.
-
-Try:
-
-```cpp
-double R = 1.0 / (std::abs(std::cos(theta)) + std::abs(std::sin(theta)));
-```
-
-### Questions to explore
-
-- Why does this shape look more square-like?
-- What happens if you multiply the whole formula by 2?
-- What happens if you change the powers or combine other trig functions?
-
+## Challenge idea
 ---
-
-## Challenge ideas
-
-
-### Challenge questions
-
-- Can you make a shape with 3 petals?
-- Can you make a shape with 8 petals?
-- Can you make a shape with an inner loop?
-- Can you make something that looks like a square?
-- Can you invent your own shape?
-
----
-### Challenge: Mystery Shape
+### Mystery Shape
 
 Using the change of variables
 
@@ -378,6 +336,7 @@ $$
 
 into polar coordinates, then use our plotting setup to visualize it.
 
+Hint: You will have squared or cubed terms? how do you write this as multiplication?
 ---
 
 ## Summary
