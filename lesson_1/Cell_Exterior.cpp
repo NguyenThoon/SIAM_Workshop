@@ -11,7 +11,7 @@ int main() {
         double theta = 2.0 * PI * i / N;
 
         //Function to Change//
-        double R = std::cos(5 * theta);
+        double R = 1;
         //-----------------//
 
         double x = R * std::cos(theta);
