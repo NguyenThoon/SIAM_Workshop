@@ -66,18 +66,18 @@ If `gnuplot` is not recognized, then GNUplot may not have been added to your PAT
 
 ## What are polar coordinates?
 
-In Cartesian coordinates, we describe a point using \((x,y)\).
+In Cartesian coordinates, we describe a point using $(x,y)$.
 
 In polar coordinates, we describe a point using:
 
-- \(r\): the distance from the origin
-- \(\theta\): the angle from the positive \(x\)-axis
+- $r$: the distance from the origin
+- $\theta$: the angle from the positive $x$-axis
 
 To convert polar coordinates into Cartesian coordinates, we use
 
-\[
+$$
 x = r\cos\theta, \qquad y = r\sin\theta
-\]
+$$
 
 That is exactly what this code is doing.
 
@@ -85,7 +85,7 @@ That is exactly what this code is doing.
 
 ## The basic idea of this program
 
-The program loops through many values of \(\theta\), computes a radius `R`, and then converts that into \((x,y,z)\) coordinates.
+The program loops through many values of $\theta$, computes a radius `R`, and then converts that into $(x,y,z)$ coordinates.
 
 Right now, the important part is this section:
 
@@ -99,7 +99,7 @@ This is where you control the shape.
 
 If `R` is constant, the program makes a circle.
 
-If `R` depends on `theta`, the program makes more interesting polar curves.
+If `R` depends on $\theta$, the program makes more interesting polar curves.
 
 ---
 
@@ -205,8 +205,8 @@ plot 'circle.dat' using 1:2 with lines
 
 This tells GNUplot to use:
 
-- column 1 for \(x\)
-- column 2 for \(y\)
+- column 1 for $x$
+- column 2 for $y$
 
 ### 3D plot
 
@@ -216,9 +216,9 @@ splot 'circle.dat' using 1:2:3 with lines
 
 This tells GNUplot to use:
 
-- column 1 for \(x\)
-- column 2 for \(y\)
-- column 3 for \(z\)
+- column 1 for $x$
+- column 2 for $y$
+- column 3 for $z$
 
 Since your current code sets `z = 0`, the 3D plot will still lie in a flat plane.
 
@@ -227,9 +227,9 @@ Since your current code sets `z = 0`, the 3D plot will still lie in a flat plane
 
 A limaçon can be written as
 
-\[
+$$
 r = a \pm b\cos\theta
-\]
+$$
 
 Try this in the code:
 
@@ -261,9 +261,9 @@ Try different values of `a` and `b`.
 
 A flower-shaped curve can be written as
 
-\[
+$$
 r = a\cos(n\theta)
-\]
+$$
 
 Try this code:
 
@@ -288,9 +288,9 @@ Try different values of `n`.
 
 A cardioid is a special case of a limaçon.
 
-\[
+$$
 r = a(1+\cos\theta)
-\]
+$$
 
 Try:
 
@@ -366,15 +366,15 @@ double R = 1.0 / (std::abs(std::cos(theta)) + std::abs(std::sin(theta)));
 
 Using the change of variables
 
-\[
+$$
 x = r\cos(\theta), \qquad y = r\sin(\theta),
-\]
+$$
 
 convert the curve
 
-\[
+$$
 (x^2+y^2)^3 - x^2y^3 = 0
-\]
+$$
 
 into polar coordinates, then use our plotting setup to visualize it.
 
