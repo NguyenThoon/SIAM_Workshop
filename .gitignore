@@ -17,6 +17,7 @@
 
 # Debug files
 *.pdb
+*.ilk
 
 # General temporary files
 *.tmp
