@@ -296,8 +296,8 @@ Try this star shaped object?
 
 ```cpp
 double a = 1.0;
-double b = 03;
-int n = 6;
+double b = 0.3;
+int n = 5;
 double R = a +b* std::cos(n * theta);
 ```
 
