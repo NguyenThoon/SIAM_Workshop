@@ -8,6 +8,62 @@ Once we generate our `.dat` file, we will use GNUplot to view it.
 
 ---
 
+## Installing GNUplot
+
+### Mac users
+
+1. Open the **Terminal** app.
+2. Install **Homebrew** with:
+
+```bash
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+```
+
+3. Follow any post-install instructions shown in Terminal.
+4. Check that Homebrew works:
+
+```bash
+brew --version
+```
+
+5. Install GNUplot with:
+
+```bash
+brew install gnuplot
+```
+
+6. Check that GNUplot works:
+
+```bash
+gnuplot
+```
+
+If GNUplot opens, the installation worked.
+
+### Windows users
+
+1. Go to the GNUplot download page and download the Windows installer.
+2. Run the installer.
+3. If you see an option to add GNUplot to your **PATH**, check that box.
+4. Finish the installation.
+5. Open **Command Prompt**.
+6. Type:
+
+```cmd
+gnuplot
+```
+
+If GNUplot opens, the installation worked.
+
+If `gnuplot` is not recognized, then GNUplot may not have been added to your PATH. In that case, you can either reinstall it and enable the PATH option, or run it directly from its installed location, for example:
+
+```cmd
+"C:\Program Files\gnuplot\bin\wgnuplot.exe"
+```
+
+---
+
+
 ## What are polar coordinates?
 
 In Cartesian coordinates, we describe a point using \((x,y)\).
@@ -80,61 +136,6 @@ Each time you want to try a new shape:
 3. Generate a new `circle.dat` file
 4. Plot the new `circle.dat` file in GNUplot
 5. Observe the shape
-
----
-
-## Installing GNUplot
-
-### Mac users
-
-1. Open the **Terminal** app.
-2. Install **Homebrew** with:
-
-```bash
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-```
-
-3. Follow any post-install instructions shown in Terminal.
-4. Check that Homebrew works:
-
-```bash
-brew --version
-```
-
-5. Install GNUplot with:
-
-```bash
-brew install gnuplot
-```
-
-6. Check that GNUplot works:
-
-```bash
-gnuplot
-```
-
-If GNUplot opens, the installation worked.
-
-### Windows users
-
-1. Go to the GNUplot download page and download the Windows installer.
-2. Run the installer.
-3. If you see an option to add GNUplot to your **PATH**, check that box.
-4. Finish the installation.
-5. Open **Command Prompt**.
-6. Type:
-
-```cmd
-gnuplot
-```
-
-If GNUplot opens, the installation worked.
-
-If `gnuplot` is not recognized, then GNUplot may not have been added to your PATH. In that case, you can either reinstall it and enable the PATH option, or run it directly from its installed location, for example:
-
-```cmd
-"C:\Program Files\gnuplot\bin\wgnuplot.exe"
-```
 
 ---
 
@@ -222,71 +223,6 @@ This tells GNUplot to use:
 Since your current code sets `z = 0`, the 3D plot will still lie in a flat plane.
 
 ---
-
-## GNUplot script files
-
-Instead of typing commands every time, you can save them in script files.
-
----
-
-## 2D GNUplot script
-
-Create a file called `plot2d.gp` and paste this into it:
-
-```gnuplot
-set title 'Polar Curve'
-set xlabel 'x'
-set ylabel 'y'
-set size square
-plot 'circle.dat' using 1:2 with lines title 'curve'
-pause -1
-```
-
-To run it:
-
-### Mac
-
-```bash
-gnuplot plot2d.gp
-```
-
-### Windows
-
-```cmd
-gnuplot plot2d.gp
-```
-
----
-
-## 3D GNUplot script
-
-Create a file called `plot3d.gp` and paste this into it:
-
-```gnuplot
-set title 'Polar Curve in 3D'
-set xlabel 'x'
-set ylabel 'y'
-set zlabel 'z'
-splot 'circle.dat' using 1:2:3 with lines title 'curve'
-pause -1
-```
-
-To run it:
-
-### Mac
-
-```bash
-gnuplot plot3d.gp
-```
-
-### Windows
-
-```cmd
-gnuplot plot3d.gp
-```
-
----
-
 ## Example: Limaçon
 
 A limaçon can be written as
@@ -416,23 +352,6 @@ double R = 1.0 / (std::abs(std::cos(theta)) + std::abs(std::sin(theta)));
 
 ## Challenge ideas
 
-Try making your own shapes by experimenting with formulas such as:
-
-```cpp
-double R = 1 + 0.5 * std::sin(theta);
-```
-
-```cpp
-double R = 1 + 0.3 * std::cos(8 * theta);
-```
-
-```cpp
-double R = std::sin(3 * theta);
-```
-
-```cpp
-double R = 2 * std::cos(2 * theta);
-```
 
 ### Challenge questions
 
@@ -443,14 +362,21 @@ double R = 2 * std::cos(2 * theta);
 - Can you invent your own shape?
 
 ---
+### Challenge: Mystery Shape
 
-## Important note about negative radius
+Using the change of variables
 
-Sometimes your formula for \(r\) may become negative.
+\[
+x = r\cos(\theta), \qquad y = r\sin(\theta),
+\]
 
-That is okay.
+convert the curve
 
-In polar coordinates, a negative radius means the point is plotted in the opposite direction. This is one reason polar curves can create loops and petals.
+\[
+(x^2+y^2)^3 - x^2y^3 = 0
+\]
+
+into polar coordinates, then use our plotting setup to visualize it.
 
 ---
 
