@@ -10,9 +10,11 @@ Once we generate our `.dat` file, we will use GNUplot to view it.
 
 ## Installing GNUplot
 
-### Mac users: Option 1
+### Mac users: Install Homebrew
 1. Download and install the `.pkg` installer from the homebrew webpage.
-### Mac users: Option 2
+[Homebrew](https://brew.sh/)
+
+or
 
 1. Open the **Terminal** app.
 2. Install **Homebrew** with:
@@ -44,7 +46,7 @@ If GNUplot opens, the installation worked.
 
 ### Windows users
 
-1. Go to the GNUplot download page and download the Windows installer.
+1. Go to the GNUplot download page and download the Windows installer. [GNUplot] (http://gnuplot.info/)
 2. Run the installer.
 3. If you see an option to add GNUplot to your **PATH**, check that box.
 4. Finish the installation.
