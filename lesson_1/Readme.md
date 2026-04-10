@@ -46,7 +46,7 @@ If GNUplot opens, the installation worked.
 
 ### Windows users
 
-1. Go to the GNUplot download page and download the Windows installer. [GNUplot] (http://gnuplot.info/)
+1. Go to the GNUplot download page and download the Windows installer. [GNUplot](http://gnuplot.info/)
 2. Run the installer.
 3. If you see an option to add GNUplot to your **PATH**, check that box.
 4. Finish the installation.
