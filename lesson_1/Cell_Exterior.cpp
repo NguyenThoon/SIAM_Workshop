@@ -1,4 +1,5 @@
 #include <fstream>
+#include <iostream>
 #include <cmath>
 
 int main() {
@@ -11,7 +12,7 @@ int main() {
         double theta = 2.0 * PI * i / N;
 
         //Function to Change//
-        double R = 1;
+        double R =theta;
         //-----------------//
 
         double x = R * std::cos(theta);

@@ -10,7 +10,9 @@ Once we generate our `.dat` file, we will use GNUplot to view it.
 
 ## Installing GNUplot
 
-### Mac users
+### Mac users: Option 1
+1. Download and install the `.pkg` installer from the homebrew webpage.
+### Mac users: Option 2
 
 1. Open the **Terminal** app.
 2. Install **Homebrew** with:
@@ -62,7 +64,11 @@ If `gnuplot` is not recognized, then GNUplot may not have been added to your PAT
 ```
 
 ## How to experiment
+When compiling a code using VScode, make sure to change the directory to the correct folder before running your code. For lesson 1, copy this into VScode terminal.
 
+```bash
+cd /SIAM_Workshop/lesson_1
+```
 Each time you want to try a new shape:
 
 1. Change the formula for `R`
