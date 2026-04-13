@@ -69,7 +69,7 @@ If `gnuplot` is not recognized, then GNUplot may not have been added to your PAT
 When compiling a code using VScode, make sure to change the directory to the correct folder before running your code. For lesson 1, copy this into VScode terminal.
 
 ```bash
-cd /SIAM_Workshop/lesson_1
+cd ./SIAM_Workshop/lesson_1
 ```
 Each time you want to try a new shape:
 
@@ -83,61 +83,42 @@ Each time you want to try a new shape:
 
 ## Opening GNUplot in the correct folder
 
-You want GNUplot to open in the same folder that contains your `circle.dat` file.
+You want GNUplot to open in the same folder that contains your `circle.dat` file. The easiest way to do that is to open a terminal **directly inside the folder**.
 
 ### Mac users
 
-1. Open **Terminal**
-2. Use the `cd` command to move into your lesson folder
-
-Example:
-
-```bash
-cd /path/to/your/SIAM_Workshop/lesson_1
-```
-
-3. Start GNUplot:
+1. Open Finder and go to your lesson folder.
+2. Open **Terminal**.
+3. Type `cd ` (with a space after it), then drag your lesson folder into the Terminal window.
+4. Press **Enter**.
+5. Start GNUplot by typing:
 
 ```bash
 gnuplot
 ```
 
-You can also change folders **inside** GNUplot by typing:
+Another option is to open Terminal first and manually move into the folder:
 
-```gnuplot
-cd '/path/to/your/SIAM_Workshop/lesson_1'
+```bash
+cd /path/to/your/SIAM_Workshop/lesson_1
+gnuplot
 ```
 
 ### Windows users
 
-1. Open **Command Prompt**
-2. Use the `cd` command to move into your lesson folder
-
-Example:
-
-```cmd
-cd C:\Users\YourName\Documents\GitHub\SIAM_Workshop\lesson_1
-```
-
-3. Start GNUplot:
+1. Open File Explorer and go to your lesson folder.
+2. Click in the address bar, type `cmd`, and press **Enter**.  
+   This opens Command Prompt directly in that folder.
+3. Start GNUplot by typing:
 
 ```cmd
 gnuplot
 ```
-
-You can also change folders **inside** GNUplot by typing:
-
-```gnuplot
-cd 'C:\Users\YourName\Documents\GitHub\SIAM_Workshop\lesson_1'
-```
-
-Note: inside GNUplot, it is safest to put the folder name in quotes.
-
 ---
 
-## Plotting the data directly in GNUplot
+## Plotting the data 
 
-After GNUplot opens, try these commands.
+After GNUplot opens in terminal, try these commands.
 
 ### 2D plot
 
