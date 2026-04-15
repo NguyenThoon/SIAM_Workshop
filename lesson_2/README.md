@@ -49,18 +49,21 @@ There are a few important changes from Week 1.
 In Week 1, we modified `R` to change the shape of the plot. Going forward, the cell will be initialized as a **circle only**, so we now make the membrane radius a constant and move it outside the loop.
 
 ### Week 1 version
+Delete this from the code.
 ```cpp
 //Function to Change//
 double R = 1;
 //-----------------//
 ```
 
+and add this
+
 ### Week 2 version
 ```cpp
 const double R_membrane = 1.0;
 ```
 
-Since the radius does not change from node to node, it is cleaner to define it once outside the loop.
+Since the radius does not change from node to node, it is cleaner to define it once outside the loop. Copy it to the section with the other `const` variables. 
 
 ---
 
@@ -75,8 +78,11 @@ In Week 2, we will create two separate data files:
 - `membrane.dat` — stores the membrane node locations
 - `interior.dat` — stores the interior node locations
 
-We create the files with:
-
+Delete this from the code 
+```cpp
+std::ofstream file("circle.dat");
+```
+and replace with
 ```cpp
 std::ofstream membraneFile("membrane.dat");
 std::ofstream interiorFile("interior.dat");
@@ -94,7 +100,7 @@ We want the interior nodes to be **inside** the membrane, so we choose a maximum
 const double R_interior_max = 0.95;
 ```
 
-Since the membrane radius is `1.0`, using `0.95` guarantees that the interior nodes stay strictly inside the membrane.
+Since the membrane radius is `1.0`, using `0.95` guarantees that the interior nodes stay strictly inside the membrane. Copy this to the variable declaration section.
 
 ---
 
@@ -102,7 +108,7 @@ Since the membrane radius is `1.0`, using `0.95` guarantees that the interior no
 
 We also want the interior nodes to be distributed randomly.
 
-Here is the random number generator code:
+Here is the random number generator code. Copyt this somewhere in the main body of your code. I reccomend above the for loop that creates the cell membrane.
 
 ```cpp
 // Random number generator for interior nodes
@@ -152,7 +158,7 @@ Using the square root spreads the points more evenly across the **area** of the 
 
 ## Create the Interior Nodes
 
-Now we can generate the interior nodes:
+Now we can generate the interior nodes. Copy this code under the section for the membrane node.
 
 ```cpp
 // Create interior nodes
@@ -177,10 +183,23 @@ This code:
 4. stores the point in `interior.dat`
 
 ---
+### Final Changes.
+Since we changed the `.dat`, we need to make one more change. Delete
 
+```cpp
+file.close();
+```
+and replace with
+
+```cpp
+    membraneFile.close();
+    interiorFile.close();
+
+    std::cout << "Created membrane.dat and interior.dat\n";
+```
 ## Full Code for `Cell_Interior.cpp`
 
-Copy the following code into `Cell_Interior.cpp`:
+Here is the full code for reference. Your code should be similar.
 
 ```cpp
 #include <fstream>
@@ -198,11 +217,6 @@ int main() {
 
     std::ofstream membraneFile("membrane.dat");
     std::ofstream interiorFile("interior.dat");
-
-    if (!membraneFile || !interiorFile) {
-        std::cout << "Error opening output files.\n";
-        return 1;
-    }
 
     // Random number generator for interior nodes
     std::random_device rd;
@@ -248,7 +262,7 @@ int main() {
 
 ## Step 3: Compile the Code
 
-After copying the code into `Cell_Interior.cpp`, compile and run it.
+Compile and run your code.
 
 This should create two files in your folder:
 
@@ -272,8 +286,8 @@ set zrange [-1:1]
 set xyplane at 0
 set view 60,30
 
-splot "membrane.dat" using 1:2:3 with points pt 7 ps 1 lc rgb "black" title "Membrane", \
-      "interior.dat" using 1:2:3 with points pt 7 ps 1 lc rgb "red" title "Interior"
+splot "membrane.dat" using 1:2:3 with points pt 7 ps 1 lc rgb "black", \
+      "interior.dat" using 1:2:3 with points pt 7 ps 1 lc rgb "red"
 ```
 
 ### What this does
