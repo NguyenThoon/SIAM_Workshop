@@ -92,6 +92,14 @@ This keeps the two sets of node data separate and makes plotting easier.
 
 ---
 
+You will also need to make one some change to where the data is stored for the membrane node. Inside the for loop for the membrane nodes, change
+```cpp
+file << x << " " << y << " " << z << "\n";
+```
+to 
+```cpp
+membraneFile << x << " " << y << " " << z << "\n";
+```
 ## Generating Interior Nodes
 
 We want the interior nodes to be **inside** the membrane, so we choose a maximum radius for the interior nodes that is smaller than the membrane radius.
