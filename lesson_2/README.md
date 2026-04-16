@@ -65,6 +65,39 @@ const double R_membrane = 1.0;
 
 Since the radius does not change from node to node, it is cleaner to define it once outside the loop. Copy it to the section with the other `const` variables. 
 
+We also need to change the 
+
+```cpp
+double x = R * std::cos(theta);
+double y = R * std::sin(theta);
+double z = 0;
+```
+```cpp
+double x = R_membrane * std::cos(theta);
+double y = R_membrane * std::sin(theta);
+double z = 0;
+```
+Last, we need to change the variable for number of nodes, since we will be tracking both membrane and internal nodes.
+Change
+
+```cpp 
+const int N = 120;
+``` 
+to 
+
+```cpp
+const int N_membrane = 120;
+```
+and
+
+ ```cpp
+for (int i = 0; i < N; i++)
+ ```
+to
+
+```cpp
+for (int i = 0; i < N_membrane; i++)
+```
 ---
 
 ### Change 2: Use two `.dat` files instead of one
