@@ -92,6 +92,14 @@ This keeps the two sets of node data separate and makes plotting easier.
 
 ---
 
+You will also need to make one some change to where the data is stored for the membrane node. Inside the for loop for the membrane nodes, change
+```cpp
+file << x << " " << y << " " << z << "\n";
+```
+to 
+```cpp
+membraneFile << x << " " << y << " " << z << "\n";
+```
 ## Generating Interior Nodes
 
 We want the interior nodes to be **inside** the membrane, so we choose a maximum radius for the interior nodes that is smaller than the membrane radius.
@@ -271,13 +279,23 @@ This should create two files in your folder:
 
 ---
 
-## Step 4: Plot the Data in GNUplot
-
+## Step 3: Plot the Data in GNUplot 2D
 Next, we will plot the data in GNUplot.
 
 Open GNUplot in the same folder as the data files, or open a terminal in that folder and launch GNUplot.
 
 Then paste in the following script:
+
+```gnuplot
+set xrange [-1.5:1.5]
+set yrange [-1.5:1.5]
+
+plot "membrane.dat" using 1:2 with points pt 7 ps 1 lc rgb "black", \
+      "interior.dat" using 1:2 with points pt 7 ps 1 lc rgb "red"
+```      
+## Step 4: Plot the Data in GNUplot 3D
+
+The Script to plot in 3D is very similar.
 
 ```gnuplot
 set xrange [-1.5:1.5]
