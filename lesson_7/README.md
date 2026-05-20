@@ -87,9 +87,7 @@ where:
 The curvature-modified unbinding distance is
 
 $$
-L(\kappa)
-=
-L_0 M_{\text{unbind}}(\kappa),
+L(\kappa)=L_0 M_{\text{unbind}}(\kappa),
 $$
 
 where $L_0$ is the base value `charUnbindDist`.
@@ -97,12 +95,7 @@ where $L_0$ is the base value `charUnbindDist`.
 The multiplier is
 
 $$
-M_{\text{unbind}}(\kappa)
-=
-\begin{cases}
-1 + \beta_{\text{conc}} r, & \kappa < 0, \\
-1 - \beta_{\text{conv}} r, & \kappa \ge 0,
-\end{cases}
+M_{\text{unbind}}(\kappa)=\begin{cases} 1 + \beta_{\text{conc}} r, & \kappa < 0, \\1 - \beta_{\text{conv}} r, & \kappa \ge 0,\end{cases}
 $$
 
 with
