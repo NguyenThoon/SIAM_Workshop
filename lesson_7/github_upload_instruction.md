@@ -174,7 +174,7 @@ load "plot_animation_gif.gnu"
 - Tune the adhesion parameters in `AdhesionParams`.
 - Compare whether the cell moves toward peaks or valleys.
 ```
-
+```
 ---
 
 ## Optional: Upload Files Using Git Commands
