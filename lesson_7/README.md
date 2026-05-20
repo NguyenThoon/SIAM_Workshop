@@ -95,7 +95,7 @@ where $L_0$ is the base value `charUnbindDist`.
 The multiplier is
 
 $$
-M_{\text{unbind}}(\kappa)=\begin{cases} 1 + \beta_{\text{conc}} r, & \kappa < 0, \\1 - \beta_{\text{conv}} r, & \kappa \ge 0,\end{cases}
+M_{\text{unbind}}(\kappa)=\begin{cases} 1 + \beta_{\text{conc}} r, & \kappa < 0, \\ 1 - \beta_{\text{conv}} r, & \kappa \ge 0,\end{cases}
 $$
 
 with
@@ -106,13 +106,13 @@ $$
 
 ### Interpretation
 
-For concave valleys, \(\kappa < 0\), so
+For concave valleys, $\kappa < 0$, so
 
 $$
 L(\kappa) = L_0(1 + \beta_{\text{conc}}r).
 $$
 
-This makes \(L(\kappa)\) larger. Since
+This makes $L(\kappa)$ larger. Since
 
 $$
 P_{\text{unbind}} = 1 - e^{-d/L},
@@ -170,12 +170,7 @@ $$
 The binding probability is
 
 $$
-p(\kappa)
-=
-\begin{cases}
-p_0 + (p_{\text{pos}} - p_0)r, & \kappa \ge 0, \\
-p_0 - (p_0 - p_{\text{neg}})r, & \kappa < 0.
-\end{cases}
+p(\kappa) = \begin{cases} p_0 + (p_{\text{pos}} - p_0)r, & \kappa \ge 0, \\ p_0 - (p_0 - p_{\text{neg}})r, & \kappa < 0. \end{cases}
 $$
 
 ### Interpretation
@@ -184,9 +179,9 @@ For positive curvature, $\kappa > 0$, the probability moves from $p_0$ toward $p
 
 With the common default values
 
-\[
+$$
 p_{\text{neg}} = 0, \qquad p_0 = 0.5, \qquad p_{\text{pos}} = 1,
-\]
+$$
 
 we get:
 
@@ -226,55 +221,55 @@ When a new adhesion forms, its initial length is sampled from a lognormal distri
 
 First define the signed curvature saturation factor
 
-\[
+$$
 s = \frac{\kappa}{\kappa_{\text{scale}} + |\kappa|}.
-\]
+$$
 
-Unlike \(r\), this quantity keeps the sign of curvature:
+Unlike $r$, this quantity keeps the sign of curvature:
 
-\[
+$$
 s > 0 \quad \text{on peaks},
-\]
+$$
 
 and
 
-\[
+$$
 s < 0 \quad \text{in valleys}.
-\]
+$$
 
 The curvature-dependent mean adhesion length is
 
-\[
+$$
 m(\kappa)
 =
 m_0(1 + \gamma_{\text{len}}s),
-\]
+$$
 
-where \(m_0\) is the base value `meanAdhesionLength`.
+where $m_0$ is the base value `meanAdhesionLength`.
 
 The actual adhesion length is sampled as
 
-\[
+$$
 \ell = \exp(\mu + \sigma Z),
-\]
+$$
 
 where
 
-\[
+$$
 Z \sim \mathcal{N}(0,1),
-\]
+$$
 
 and
 
-\[
+$$
 \mu = \log(m(\kappa)) - \frac{\sigma^2}{2}.
-\]
+$$
 
-This choice of \(\mu\) makes the expected adhesion length equal to \(m(\kappa)\).
+This choice of $\mu$ makes the expected adhesion length equal to $m(\kappa)$.
 
 ### Interpretation
 
-If \(\gamma_{\text{len}} > 0\), then:
+If $\gamma_{\text{len}} > 0$, then:
 
 - peaks/ridges have larger mean adhesion length,
 - valleys have smaller mean adhesion length.
@@ -308,9 +303,9 @@ This mechanism should be tuned carefully because it can compete with the valley-
 
 | Model component | Equation | Biological meaning | Likely bias |
 |---|---|---|---|
-| Curvature-dependent unbinding | \(P_{\text{unbind}} = 1 - e^{-d/L(\kappa)}\) | Adhesions in valleys are more stable; adhesions on peaks are shorter lived | Valley-favoring |
-| Curvature-dependent binding | \(p(\kappa)\) moves toward \(p_{\text{pos}}\) on peaks and \(p_{\text{neg}}\) in valleys | More adhesions form on peaks; fewer form in valleys | Peak-favoring |
-| Curvature-dependent adhesion length | \(m(\kappa)=m_0(1+\gamma_{\text{len}}s)\) | Curvature changes the size/strength scale of new adhesions | Depends on tuning |
+| Curvature-dependent unbinding | $P_{\text{unbind}} = 1 - e^{-d/L(\kappa)}$ | Adhesions in valleys are more stable; adhesions on peaks are shorter lived | Valley-favoring |
+| Curvature-dependent binding | $p(\kappa)$ moves toward $p_{\text{pos}}$ on peaks and $p_{\text{neg}}$ in valleys | More adhesions form on peaks; fewer form in valleys | Peak-favoring |
+| Curvature-dependent adhesion length | $m(\kappa)=m_0(1+\gamma_{\text{len}}s)$ | Curvature changes the size/strength scale of new adhesions | Depends on tuning |
 
 The important modeling point is that these effects compete. The biological observation is not simply “more adhesions means the cell goes there.” Pieuchot et al. found that adhesions can be more numerous on convex regions but more stable in concave regions. In the model, cell behavior depends on the balance between adhesion formation and adhesion lifetime.
 
