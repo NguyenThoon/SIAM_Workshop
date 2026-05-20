@@ -34,33 +34,33 @@ The goal is not to exactly reproduce every biological detail, but to encode the 
 
 Our surface is
 
-\[
+$$
 z = f(x).
-\]
+$$
 
 The signed curvature used in the code is
 
-\[
+$$
 \kappa = \frac{-f''(x)}{\left(1 + (f'(x))^2\right)^{3/2}}.
-\]
+$$
 
 For the surface
 
-\[
+$$
 z = a\cos(x/b),
-\]
+$$
 
 this gives the convention:
 
-\[
+$$
 \kappa > 0 \quad \text{on convex peaks/ridges},
-\]
+$$
 
 and
 
-\[
+$$
 \kappa < 0 \quad \text{in concave valleys}.
-\]
+$$
 
 So in the code:
 
@@ -75,69 +75,69 @@ kappa < 0.0   // concave valley
 
 The unbinding probability for an existing adhesion is modeled as
 
-\[
+$$
 P_{\text{unbind}}
 =
 1 - \exp\left(-\frac{d}{L(\kappa)}\right),
-\]
+$$
 
 where:
 
-- \(d\) is the distance between the node and the adhesion site,
-- \(L(\kappa)\) is the curvature-dependent characteristic unbinding distance.
+- $d$ is the distance between the node and the adhesion site,
+- $L(\kappa)$ is the curvature-dependent characteristic unbinding distance.
 
 The curvature-modified unbinding distance is
 
-\[
+$$
 L(\kappa)
 =
 L_0 M_{\text{unbind}}(\kappa),
-\]
+$$
 
-where \(L_0\) is the base value `charUnbindDist`.
+where $L_0$ is the base value `charUnbindDist`.
 
 The multiplier is
 
-\[
+$$
 M_{\text{unbind}}(\kappa)
 =
 \begin{cases}
 1 + \beta_{\text{conc}} r, & \kappa < 0, \\
 1 - \beta_{\text{conv}} r, & \kappa \ge 0,
 \end{cases}
-\]
+$$
 
 with
 
-\[
+$$
 r = \frac{|\kappa|}{\kappa_{\text{scale}} + |\kappa|}.
-\]
+$$
 
 ### Interpretation
 
 For concave valleys, \(\kappa < 0\), so
 
-\[
+$$
 L(\kappa) = L_0(1 + \beta_{\text{conc}}r).
-\]
+$$
 
 This makes \(L(\kappa)\) larger. Since
 
-\[
+$$
 P_{\text{unbind}} = 1 - e^{-d/L},
-\]
+$$
 
-a larger \(L\) gives a smaller unbinding probability. Therefore:
+a larger $L$ gives a smaller unbinding probability. Therefore:
 
 > Increasing `betaConc` makes adhesions in valleys more stable.
 
-For convex peaks, \(\kappa > 0\), so
+For convex peaks, $\kappa > 0$, so
 
-\[
+$$
 L(\kappa) = L_0(1 - \beta_{\text{conv}}r).
-\]
+$$
 
-This makes \(L(\kappa)\) smaller, which increases the unbinding probability. Therefore:
+This makes $L(\kappa)$ smaller, which increases the unbinding probability. Therefore:
 
 > Increasing `betaConv` makes adhesions on peaks more likely to unbind.
 
@@ -166,30 +166,30 @@ The probability of forming a new adhesion site is also curvature-dependent.
 
 We define
 
-\[
+$$
 k_0 = \kappa_{\text{par}}\kappa_{\text{scale}},
-\]
+$$
 
 and
 
-\[
+$$
 r = \frac{|\kappa|}{k_0 + |\kappa|}.
-\]
+$$
 
 The binding probability is
 
-\[
+$$
 p(\kappa)
 =
 \begin{cases}
 p_0 + (p_{\text{pos}} - p_0)r, & \kappa \ge 0, \\
 p_0 - (p_0 - p_{\text{neg}})r, & \kappa < 0.
 \end{cases}
-\]
+$$
 
 ### Interpretation
 
-For positive curvature, \(\kappa > 0\), the probability moves from \(p_0\) toward \(p_{\text{pos}}\). For negative curvature, \(\kappa < 0\), the probability moves from \(p_0\) toward \(p_{\text{neg}}\).
+For positive curvature, $\kappa > 0$, the probability moves from $p_0$ toward $p_{\text{pos}}$. For negative curvature, $\kappa < 0$, the probability moves from $p_0$ toward $p_{\text{neg}}$.
 
 With the common default values
 
