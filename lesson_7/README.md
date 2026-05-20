@@ -9,29 +9,389 @@ In earlier lessons, we built a cell from membrane and interior nodes, added forc
 The code this week is more complex and may take longer to compile and run, so the complete code has already been uploaded for you. Your main task is to understand the logic, run the simulation, and experiment with the tuning parameters.
 
 ---
+## Biological background
 
-## Biological and Modeling Idea
+Pieuchot et al. introduced **curvotaxis**, the tendency of cells to respond to cell-scale curvature and preferentially migrate toward **concave valleys** rather than remaining on **convex peaks**.
 
-Curvotaxis is directed cell migration in response to curvature. In this simplified model, the cell does not explicitly “think” or “choose” a direction. Instead, curvature affects how adhesion sites form, how long they last, and how far from the membrane node they are placed. These local adhesion rules produce a net bias in the cell's motion.
+A key biological observation from the paper is that focal adhesions behave differently depending on local surface curvature:
 
-The model uses three main curvature-dependent mechanisms:
+- **On convex peaks/ridges:** cells form **more focal adhesions**, but those adhesions are **shorter lived** and less stable.
+- **In concave valleys:** cells form **fewer focal adhesions**, but those adhesions are **more stable** and longer lived.
 
-1. **Curvature-dependent unbinding distance**
-   - Adhesions in concave valleys are made longer-lived.
-   - Adhesions near convex peaks are made shorter-lived.
-   - This mechanism tends to help the cell remain attached in valleys.
+In our model, we represent this idea by making three adhesion quantities depend on curvature:
 
-2. **Curvature-dependent binding probability**
-   - The probability of forming a new adhesion site changes depending on curvature.
-   - In the current version, positive curvature increases binding probability, while negative curvature decreases it.
-   - This mechanism can bias the cell toward convex regions if it is too strong.
+1. the probability that an existing adhesion unbinds,
+2. the probability that a new adhesion forms,
+3. the length/strength scale of a newly formed adhesion.
 
-3. **Curvature-dependent adhesion length**
-   - The sampled length of a new adhesion is modified by curvature.
-   - This changes where new adhesion sites are placed relative to membrane nodes.
-   - The strength of this effect is controlled by a tuning parameter.
+The goal is not to exactly reproduce every biological detail, but to encode the main qualitative idea:
 
-The important lesson is that the final motion is the result of competition between these effects. By tuning the parameters, you can make the cell drift toward valleys, peaks, or barely move at all.
+> Curvature changes adhesion dynamics, and asymmetric adhesion dynamics can bias cell motion.
+
+---
+
+## Curvature sign convention
+
+Our surface is
+
+\[
+z = f(x).
+\]
+
+The signed curvature used in the code is
+
+\[
+\kappa = \frac{-f''(x)}{\left(1 + (f'(x))^2\right)^{3/2}}.
+\]
+
+For the surface
+
+\[
+z = a\cos(x/b),
+\]
+
+this gives the convention:
+
+\[
+\kappa > 0 \quad \text{on convex peaks/ridges},
+\]
+
+and
+
+\[
+\kappa < 0 \quad \text{in concave valleys}.
+\]
+
+So in the code:
+
+```cpp
+kappa > 0.0   // convex peak/ridge
+kappa < 0.0   // concave valley
+```
+
+---
+
+## 1. Curvature-dependent unbinding
+
+The unbinding probability for an existing adhesion is modeled as
+
+\[
+P_{\text{unbind}}
+=
+1 - \exp\left(-\frac{d}{L(\kappa)}\right),
+\]
+
+where:
+
+- \(d\) is the distance between the node and the adhesion site,
+- \(L(\kappa)\) is the curvature-dependent characteristic unbinding distance.
+
+The curvature-modified unbinding distance is
+
+\[
+L(\kappa)
+=
+L_0 M_{\text{unbind}}(\kappa),
+\]
+
+where \(L_0\) is the base value `charUnbindDist`.
+
+The multiplier is
+
+\[
+M_{\text{unbind}}(\kappa)
+=
+\begin{cases}
+1 + \beta_{\text{conc}} r, & \kappa < 0, \\
+1 - \beta_{\text{conv}} r, & \kappa \ge 0,
+\end{cases}
+\]
+
+with
+
+\[
+r = \frac{|\kappa|}{\kappa_{\text{scale}} + |\kappa|}.
+\]
+
+### Interpretation
+
+For concave valleys, \(\kappa < 0\), so
+
+\[
+L(\kappa) = L_0(1 + \beta_{\text{conc}}r).
+\]
+
+This makes \(L(\kappa)\) larger. Since
+
+\[
+P_{\text{unbind}} = 1 - e^{-d/L},
+\]
+
+a larger \(L\) gives a smaller unbinding probability. Therefore:
+
+> Increasing `betaConc` makes adhesions in valleys more stable.
+
+For convex peaks, \(\kappa > 0\), so
+
+\[
+L(\kappa) = L_0(1 - \beta_{\text{conv}}r).
+\]
+
+This makes \(L(\kappa)\) smaller, which increases the unbinding probability. Therefore:
+
+> Increasing `betaConv` makes adhesions on peaks more likely to unbind.
+
+### Parameters
+
+```cpp
+adh.charUnbindDist
+adh.betaConc
+adh.betaConv
+```
+
+- Increase `charUnbindDist`: adhesions generally live longer everywhere.
+- Decrease `charUnbindDist`: adhesions generally unbind more easily everywhere.
+- Increase `betaConc`: valleys become more adhesive/stable.
+- Decrease `betaConc`: valleys become less stabilizing.
+- Increase `betaConv`: peaks become more slippery because adhesions unbind more easily.
+- Decrease `betaConv`: adhesions on peaks become less likely to unbind.
+
+This is the main model component that supports Pieuchot-style migration toward valleys.
+
+---
+
+## 2. Curvature-dependent new binding probability
+
+The probability of forming a new adhesion site is also curvature-dependent.
+
+We define
+
+\[
+k_0 = \kappa_{\text{par}}\kappa_{\text{scale}},
+\]
+
+and
+
+\[
+r = \frac{|\kappa|}{k_0 + |\kappa|}.
+\]
+
+The binding probability is
+
+\[
+p(\kappa)
+=
+\begin{cases}
+p_0 + (p_{\text{pos}} - p_0)r, & \kappa \ge 0, \\
+p_0 - (p_0 - p_{\text{neg}})r, & \kappa < 0.
+\end{cases}
+\]
+
+### Interpretation
+
+For positive curvature, \(\kappa > 0\), the probability moves from \(p_0\) toward \(p_{\text{pos}}\). For negative curvature, \(\kappa < 0\), the probability moves from \(p_0\) toward \(p_{\text{neg}}\).
+
+With the common default values
+
+\[
+p_{\text{neg}} = 0, \qquad p_0 = 0.5, \qquad p_{\text{pos}} = 1,
+\]
+
+we get:
+
+- peaks/ridges have high binding probability,
+- flat regions have intermediate binding probability,
+- valleys have low binding probability.
+
+This matches the biological idea:
+
+> More adhesions form on peaks, while fewer adhesions form in valleys.
+
+### Parameters
+
+```cpp
+adh.pNeg
+adh.p0
+adh.pPos
+adh.kappaPar
+```
+
+- Increase `pPos`: more new adhesions form on peaks.
+- Decrease `pPos`: weakens the peak-binding preference.
+- Increase `pNeg`: more new adhesions form in valleys.
+- Decrease `pNeg`: fewer new adhesions form in valleys.
+- Increase `p0`: raises the baseline binding probability everywhere.
+- Decrease `p0`: lowers the baseline binding probability everywhere.
+- Increase `kappaPar`: curvature effects saturate more slowly, so curvature has a weaker effect unless curvature is large.
+- Decrease `kappaPar`: curvature effects saturate faster, so curvature has a stronger effect even for moderate curvature.
+
+This mechanism can favor peaks because more adhesions form there. In the biological interpretation, those peak adhesions should be shorter lived, so this mechanism should be balanced against curvature-dependent unbinding.
+
+---
+
+## 3. Curvature-dependent adhesion length / strength scale
+
+When a new adhesion forms, its initial length is sampled from a lognormal distribution. The mean of this distribution depends on curvature.
+
+First define the signed curvature saturation factor
+
+\[
+s = \frac{\kappa}{\kappa_{\text{scale}} + |\kappa|}.
+\]
+
+Unlike \(r\), this quantity keeps the sign of curvature:
+
+\[
+s > 0 \quad \text{on peaks},
+\]
+
+and
+
+\[
+s < 0 \quad \text{in valleys}.
+\]
+
+The curvature-dependent mean adhesion length is
+
+\[
+m(\kappa)
+=
+m_0(1 + \gamma_{\text{len}}s),
+\]
+
+where \(m_0\) is the base value `meanAdhesionLength`.
+
+The actual adhesion length is sampled as
+
+\[
+\ell = \exp(\mu + \sigma Z),
+\]
+
+where
+
+\[
+Z \sim \mathcal{N}(0,1),
+\]
+
+and
+
+\[
+\mu = \log(m(\kappa)) - \frac{\sigma^2}{2}.
+\]
+
+This choice of \(\mu\) makes the expected adhesion length equal to \(m(\kappa)\).
+
+### Interpretation
+
+If \(\gamma_{\text{len}} > 0\), then:
+
+- peaks/ridges have larger mean adhesion length,
+- valleys have smaller mean adhesion length.
+
+This can make peak adhesions mechanically stronger or longer at formation, depending on how the length interacts with the force law.
+
+If this effect is too strong, the cell may climb toward peaks instead of stabilizing in valleys.
+
+### Parameters
+
+```cpp
+adh.meanAdhesionLength
+adh.gammaLen
+adh.lognormalSigma
+adh.minMeanAdhesionLength
+```
+
+- Increase `meanAdhesionLength`: adhesions are generally longer when they form.
+- Decrease `meanAdhesionLength`: adhesions are generally shorter when they form.
+- Increase `gammaLen`: curvature has a stronger effect on adhesion length.
+- Set `gammaLen = 0.0`: turns off curvature-dependent adhesion length.
+- Increase `lognormalSigma`: adhesion lengths become more variable.
+- Decrease `lognormalSigma`: adhesion lengths become more consistent.
+- Increase `minMeanAdhesionLength`: prevents adhesion lengths from becoming too small.
+
+This mechanism should be tuned carefully because it can compete with the valley-stabilizing unbinding mechanism.
+
+---
+
+## Summary of the three mechanisms
+
+| Model component | Equation | Biological meaning | Likely bias |
+|---|---|---|---|
+| Curvature-dependent unbinding | \(P_{\text{unbind}} = 1 - e^{-d/L(\kappa)}\) | Adhesions in valleys are more stable; adhesions on peaks are shorter lived | Valley-favoring |
+| Curvature-dependent binding | \(p(\kappa)\) moves toward \(p_{\text{pos}}\) on peaks and \(p_{\text{neg}}\) in valleys | More adhesions form on peaks; fewer form in valleys | Peak-favoring |
+| Curvature-dependent adhesion length | \(m(\kappa)=m_0(1+\gamma_{\text{len}}s)\) | Curvature changes the size/strength scale of new adhesions | Depends on tuning |
+
+The important modeling point is that these effects compete. The biological observation is not simply “more adhesions means the cell goes there.” Pieuchot et al. found that adhesions can be more numerous on convex regions but more stable in concave regions. In the model, cell behavior depends on the balance between adhesion formation and adhesion lifetime.
+
+---
+
+## Suggested tuning exercises
+
+### Exercise 1: Isolate curvature-dependent unbinding
+
+```cpp
+adh.pNeg = 0.5;
+adh.p0   = 0.5;
+adh.pPos = 0.5;
+adh.gammaLen = 0.0;
+
+adh.betaConc = 60.0;
+adh.betaConv = 0.02;
+```
+
+This turns off curvature-dependent new binding and curvature-dependent adhesion length. Only adhesion lifetime depends on curvature.
+
+Expected behavior: the cell should be more likely to stabilize near valleys.
+
+---
+
+### Exercise 2: Strengthen peak unbinding
+
+```cpp
+adh.betaConv = 0.1;
+```
+
+Increasing `betaConv` makes adhesions on peaks shorter lived.
+
+Expected behavior: peaks become more slippery, so the cell should be less likely to stay on peaks.
+
+---
+
+### Exercise 3: Strengthen valley stabilization
+
+```cpp
+adh.betaConc = 100.0;
+```
+
+Increasing `betaConc` makes adhesions in valleys longer lived.
+
+Expected behavior: once the cell reaches a valley, it should remain there more strongly.
+
+---
+
+### Exercise 4: Weaken peak binding
+
+```cpp
+adh.pNeg = 0.25;
+adh.p0   = 0.5;
+adh.pPos = 0.75;
+```
+
+This reduces the difference between valley and peak binding probabilities.
+
+Expected behavior: the cell should be less biased toward forming many adhesions on peaks.
+
+---
+
+### Exercise 5: Turn off curvature-dependent adhesion length
+
+```cpp
+adh.gammaLen = 0.0;
+```
+
+This makes new adhesion lengths independent of curvature.
+
+Expected behavior: the result will depend mainly on the competition between new binding probability and unbinding lifetime.
 
 ---
 
@@ -574,77 +934,6 @@ adh.gammaLen = 0.2;
 These are the main parameters to modify when tuning the simulation.
 
 ---
-
-# Tuning Guide
-
-## To make valley migration stronger
-
-Try increasing:
-
-```cpp
-adh.betaConc = 80.0;
-```
-
-or decreasing:
-
-```cpp
-adh.betaConv = 0.01;
-```
-
-This makes adhesions last longer in valleys and/or makes adhesions on peaks easier to lose.
-
-## To make binding more sensitive to curvature
-
-Try decreasing:
-
-```cpp
-adh.kappaPar = 0.5;
-```
-
-Smaller `kappaPar` makes the curvature-dependent probability saturate more quickly.
-
-## To make adhesion lengths more curvature-sensitive
-
-Try increasing:
-
-```cpp
-adh.gammaLen = 0.5;
-```
-
-This makes adhesion placement depend more strongly on curvature.
-
-## To make the cell attach more strongly overall
-
-Try increasing:
-
-```cpp
-adh.kadh = 3.0;
-```
-
-or increasing:
-
-```cpp
-adh.maxSubSitePerNode = 30;
-```
-
-Be careful: increasing the number of adhesion sites increases the runtime.
-
----
-
-# Suggested Experiments
-
-Try the following one at a time:
-
-1. Change the initial cell center `x_c`.
-2. Change `betaConc` and observe whether the cell moves more strongly toward valleys.
-3. Change `betaConv` and observe how easily the cell leaves peaks.
-4. Change `pNeg`, `p0`, and `pPos` to test how binding probability affects migration.
-5. Change `gammaLen` to test the effect of curvature-dependent adhesion length.
-6. Run a short simulation first, then scale up `N_steps`.
-7. Increase the number of membrane and interior nodes and observe how runtime changes.
-
----
-
 # Runtime Scaling Notes
 
 The expensive parts of the simulation are the pairwise force loops and adhesion updates.
