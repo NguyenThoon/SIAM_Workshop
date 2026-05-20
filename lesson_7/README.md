@@ -171,7 +171,8 @@ $$
 The binding probability is
 
 $$
-p(\kappa) = \begin{cases} p_0 + (p_{\text{pos}} - p_0)r, & \kappa \ge 0, \\ p_0 - (p_0 - p_{\text{neg}})r, & \kappa < 0. \end{cases}
+p(\kappa) = \begin{cases} p_0 + (p_{\text{pos}} - p_0)r, & \kappa \ge 0, \\ 
+p_0 - (p_0 - p_{\text{neg}})r, & \kappa < 0. \end{cases}
 $$
 
 ### Interpretation
