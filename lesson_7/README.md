@@ -77,7 +77,7 @@ The unbinding probability for an existing adhesion is modeled as
 
 $$ 
 P_{\text{unbind}}=1 - \exp\left(-\frac{d}{L(\kappa)}\right),
-$$
+$$S
 
 where:
 
@@ -95,7 +95,8 @@ where $L_0$ is the base value `charUnbindDist`.
 The multiplier is
 
 $$
-M_{\text{unbind}}(\kappa)=\begin{cases} 1 + \beta_{\text{conc}} r, & \kappa < 0, @ 1 - \beta_{\text{conv}} r, & \kappa \ge 0,\end{cases}
+M_{\text{unbind}}(\kappa)=\begin{cases} 1 + \beta_{\text{conc}} r, & \kappa < 0, \\
+1 - \beta_{\text{conv}} r, & \kappa \ge 0,\end{cases}
 $$
 
 with
