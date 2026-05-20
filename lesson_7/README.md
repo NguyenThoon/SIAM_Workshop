@@ -483,15 +483,15 @@ inline double curvatureFromSurfaceDerivatives(double dzdx, double d2zdx2) {
 
 This function computes the signed curvature of a surface of the form
 
-\[
+$$
 z = f(x).
-\]
+$$
 
 The formula is
 
-\[
+$$
 \kappa = \frac{-z''(x)}{\left(1 + (z'(x))^2\right)^{3/2}}.
-\]
+$$
 
 The negative sign is important because we are using the same sign convention as the MATLAB version:
 
@@ -501,9 +501,9 @@ The negative sign is important because we are using the same sign convention as 
 
 For the surface
 
-\[
+$$
 z = a\cos(x/b),
-\]
+$$
 
 peaks have positive curvature and valleys have negative curvature.
 
@@ -568,9 +568,9 @@ This function computes the curvature-modified characteristic unbinding distance.
 
 The adhesion unbinding probability has the form
 
-\[
+$$
 P_{unbind} = 1 - e^{-d/L},
-\]
+$$
 
 where:
 
@@ -667,17 +667,17 @@ The baseline mean length is `meanAdhesionLength`, but curvature modifies it thro
 
 The signed factor
 
-\[
+$$
 s = \frac{\kappa}{\kappaScale + |\kappa|}
-\]
+$$
 
 lies approximately between `-1` and `1`.
 
 Then the mean length is modified by
 
-\[
+$$
 meanLength = meanAdhesionLength(1 + gammaLen \cdot s).
-\]
+$$
 
 Increasing `gammaLen` makes adhesion placement more sensitive to curvature.
 
@@ -771,9 +771,9 @@ Inside the function, the adhesion update has three steps:
    - Each attached adhesion site acts like a spring.
    - The force has the form
 
-\[
+$$
 F = k_{adh}(x_{bind} - x_{node}).
-\]
+$$
 
 The code uses ordinary 3D Euclidean distance for adhesion stretch. This is faster than the MATLAB arclength calculation and is better for this workshop version.
 
@@ -829,9 +829,9 @@ The main file now explicitly defines the surface, its first derivative, and its 
 
 For the surface
 
-\[
+$$
 z = a\cos(x/b),
-\]
+$$
 
 we use:
 
@@ -928,9 +928,9 @@ The expensive parts of the simulation are the pairwise force loops and adhesion 
 
 The approximate cost per time step is
 
-\[
+$$
 O(N_m^2 + N_i^2 + N_mN_i + N_mS),
-\]
+$$
 
 where:
 
