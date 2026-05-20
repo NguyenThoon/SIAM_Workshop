@@ -118,63 +118,7 @@ At minimum, your README should include:
 5. Instructions for plotting the output using Gnuplot.
 6. A brief note about what parameters students can modify.
 
-Example structure:
-
-```md
-# Curvotaxis Project
-
-This project simulates a single cell moving on a curved surface using a simplified subcellular element model.
-
-The model is inspired by curvotaxis, where cells respond to curvature in their environment. In the Pieuchot curvotaxis paper, cells tend to avoid convex peaks and stabilize in concave valleys.
-
-## Files
-
-- `SCE_Curvotaxis.cpp`: main simulation code
-- `forces.h`: force and adhesion functions
-- `plot_animation.gnu`: Gnuplot script for viewing the simulation
-- `plot_animation_gif.gnu`: Gnuplot script for creating an animated GIF
-
-## How to Compile
-
-```bash
-g++ -std=c++17 SCE_Curvotaxis.cpp -o curvotaxis
-```
-
-## How to Run
-
-```bash
-./curvotaxis
-```
-
-On Windows PowerShell, you may need:
-
-```powershell
-.\curvotaxis.exe
-```
-
-## How to Plot
-
-Open Gnuplot and run:
-
-```gnuplot
-load "plot_animation.gnu"
-```
-
-To create a GIF animation, run:
-
-```gnuplot
-load "plot_animation_gif.gnu"
-```
-
-## Things to Try
-
-- Change the number of time steps.
-- Change the surface amplitude.
-- Change the number of membrane or interior nodes.
-- Tune the adhesion parameters in `AdhesionParams`.
-- Compare whether the cell moves toward peaks or valleys.
-```
-```
+A template will be provided next week.
 ---
 
 ## Optional: Upload Files Using Git Commands
