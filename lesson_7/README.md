@@ -75,10 +75,8 @@ kappa < 0.0   // concave valley
 
 The unbinding probability for an existing adhesion is modeled as
 
-$$
-P_{\text{unbind}}
-=
-1 - \exp\left(-\frac{d}{L(\kappa)}\right),
+$$ 
+P_{\text{unbind}}=1 - \exp\left(-\frac{d}{L(\kappa)}\right),
 $$
 
 where:
